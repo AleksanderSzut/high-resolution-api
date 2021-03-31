@@ -32,7 +32,7 @@ class GetUser extends Command
      *
      * @return int
      */
-    public function handle(): bool
+    public function handle(): int
     {
         //todo: adding api selection
         try {
