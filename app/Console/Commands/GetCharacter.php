@@ -6,6 +6,7 @@ use App\Services\CharactersService;
 use App\Services\CharacterApi\CharacterApiAaoiaf;
 use Error;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 
 class GetCharacter extends Command
 {
@@ -31,7 +32,7 @@ class GetCharacter extends Command
     private static function getCharactersCountByType(string $type, CharactersService $charactersService): string
     {
         if ($charactersService->$type > 0) {
-            return __('console.' . $type, ['count' => $charactersService->$type]);
+            return __('console.' . $type, ['count' => $charactersService->$type]).PHP_EOL;
         }
         return "";
     }
@@ -39,6 +40,14 @@ class GetCharacter extends Command
     private function generateSummary(CharactersService $charactersService): string
     {
         $resultMessage = "";
+
+        //header
+        $resultMessage .= __('console.header', locale: 'en').PHP_EOL.PHP_EOL;
+
+        /*
+         * I'm not simplifying this to leave it basically solid.
+         * getting info about character adding result
+         *  */
 
         $resultMessage .= self::getCharactersCountByType('added', $charactersService);
         $resultMessage .= self::getCharactersCountByType('updated', $charactersService);
@@ -58,9 +67,7 @@ class GetCharacter extends Command
         //todo: adding api selection
         try {
             $characterService = new CharactersService(new CharacterApiAaoiaf, $this->getCharacterCount());
-            $this->generateSummary($characterService);
-
-
+            echo $this->generateSummary($characterService);
         } catch (Error) {
             return 0;
         }
