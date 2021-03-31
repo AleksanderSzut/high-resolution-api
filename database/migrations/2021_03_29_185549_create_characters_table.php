@@ -17,9 +17,9 @@ class CreateCharactersTable extends Migration
             $table->id();
             $table->uuid('uuid');
             //URL will allow to identify the same characters
-            $table->string('url');
+            $table->string('url')->unique();
             $table->string("name")->nullable();
-            $table->enum('gender', ['female', 'male', 'non-binary', 'unknown']);
+            $table->enum('gender', ['female', 'male', 'non-binary'])->nullable();
             $table->string('culture')->nullable();
             $table->string('born')->nullable();
             $table->string('died')->nullable();
@@ -30,8 +30,8 @@ class CreateCharactersTable extends Migration
             $table->json("aliases")->nullable();
             $table->json("allegiances")->nullable();
             $table->json("books")->nullable();
-            $table->json("tvSeries")->nullable();
             $table->json("povBooks")->nullable();
+            $table->json("tvSeries")->nullable();
             $table->json("playedBy")->nullable();
 
             $table->timestamps();
