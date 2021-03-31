@@ -57,7 +57,7 @@ class GetCharacter extends Command
     {
         //todo: adding api selection
         try {
-            $characterService = new CharactersService(new CharacterApiAaoiaf, $this->getUserCount());
+            $characterService = new CharactersService(new CharacterApiAaoiaf, $this->getCharacterCount());
             $this->generateSummary($characterService);
 
 
