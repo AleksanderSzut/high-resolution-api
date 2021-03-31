@@ -43,6 +43,13 @@ class GetUser extends Command
      */
     public function handle()
     {
-        $characters = new CharactersService(new CharacterApiAaoiaf, 1);
+        //todo: adding api selection
+        try {
+            new CharactersService(new CharacterApiAaoiaf, $this->getUserCount());
+        } catch (\Error $e) {
+            return 0;
+        }
+
+        return 1;
     }
 }
