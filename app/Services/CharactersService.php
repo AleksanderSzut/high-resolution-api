@@ -50,12 +50,13 @@ class CharactersService
         }
     }
 
+    public function saveToDb(): void
+    {
         foreach ($this->characters as $value) {
-            //todo: Add a count of added, updated and unadded characters
             $character = new CharacterAdd($value, $this->overwriteExisting);
-        }
 
-        return false;
+            $this->countCharacter($character);
+        }
     }
 
 }
