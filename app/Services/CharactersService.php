@@ -12,16 +12,13 @@ class CharactersService
     private bool $overwriteExisting;
     private array $characters;
 
-    public int $added = 0;
-    public int $updated = 0;
-    public int $unchanged = 0;
-    public int $rejected = 0;
+    public int $added = 0, $updated = 0, $unchanged = 0, $rejected = 0;
 
     public function getCharacters(): void
     {
         $this->characterApi->getAllCharacters($this->count);
         $this->characterApi->callApi();
-            $this->characters=  $this->characterApi->getResponse();
+        $this->characters = $this->characterApi->getResponse();
     }
 
     public function __construct(CharacterApiInterface $characterApi, int $count = 50, bool $overwriteExisting = false)
@@ -35,14 +32,31 @@ class CharactersService
 
     }
 
-    public function saveToDb():bool {
-
-        foreach ($this->characters as $value) {
-            //todo: Add a count of added, updated and unadded characters
-            $character = new CharacterAdd($value, $this->overwriteExisting);
+    protected function countCharacter(CharacterAdd $characterObject): void
+    {
+        switch ($characterObject->getStatus()) {
+            case CharacterAdd::STATUS_UNCHANGED:
+                $this->unchanged++;
+                break;
+            case CharacterAdd::STATUS_UPDATED:
+                $this->updated++;
+                break;
+            case CharacterAdd::STATUS_REJECTED:
+                $this->rejected++;
+                break;
+            case CharacterAdd::STATUS_ADDED:
+                $this->added++;
+                break;
         }
+    }
 
-        return false;
+    public function saveToDb(): void
+    {
+        foreach ($this->characters as $value) {
+            $character = new CharacterAdd($value, $this->overwriteExisting);
+
+            $this->countCharacter($character);
+        }
     }
 
 }
