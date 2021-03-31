@@ -32,6 +32,10 @@ class GetUser extends Command
         parent::__construct();
     }
 
+    private function getUserCount():int {
+        return (int)($this->argument('count') ?? 1);
+    }
+
     /**
      * Execute the console command.
      *
