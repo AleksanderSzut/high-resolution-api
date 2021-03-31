@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\CharactersService;
 use App\Services\CharacterApi\CharacterApiAaoiaf;
+use Error;
 use Illuminate\Console\Command;
 
 class GetUser extends Command
@@ -22,16 +23,6 @@ class GetUser extends Command
      */
     protected $description = 'Downloading people from https://anapioficeandfire.com/ and saving them to the database';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     private function getUserCount():int {
         return (int)($this->argument('count') ?? 1);
     }
@@ -41,12 +32,12 @@ class GetUser extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): bool
     {
         //todo: adding api selection
         try {
             new CharactersService(new CharacterApiAaoiaf, $this->getUserCount());
-        } catch (\Error $e) {
+        } catch (Error) {
             return 0;
         }
 
