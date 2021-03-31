@@ -12,10 +12,7 @@ class CharactersService
     private bool $overwriteExisting;
     private array $characters;
 
-    public int $added = 0;
-    public int $updated = 0;
-    public int $unchanged = 0;
-    public int $rejected = 0;
+    public int $added = 0, $updated = 0, $unchanged = 0, $rejected = 0;
 
     public function getCharacters(): void
     {
